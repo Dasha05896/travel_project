@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
+
 class TravelProject(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -15,11 +16,10 @@ class TravelProject(models.Model):
             raise ValidationError("Cannot delete a project with visited places.")
         super().delete(*args, **kwargs)
 
+
 class Place(models.Model):
     project = models.ForeignKey(
-        TravelProject,
-        related_name="places",
-        on_delete=models.CASCADE
+        TravelProject, related_name="places", on_delete=models.CASCADE
     )
     external_id = models.IntegerField()
     notes = models.TextField(blank=True, null=True)
@@ -34,6 +34,9 @@ class Place(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         project = self.project
-        if project.places.exists() and not project.places.filter(is_visited=False).exists():
+        if (
+            project.places.exists()
+            and not project.places.filter(is_visited=False).exists()
+        ):
             project.is_completed = True
             project.save()

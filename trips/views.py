@@ -13,7 +13,7 @@ class TravelProjectViewSet(viewsets.ModelViewSet):
         if instance.places.filter(is_visited=True).exists():
             return Response(
                 {"error": "Cannot delete project because it contains visited places."},
-                status=status.HTTP_400_BAD_REQUEST
+                status=status.HTTP_400_BAD_REQUEST,
             )
         return super().destroy(request, *args, **kwargs)
 
@@ -25,10 +25,8 @@ class PlaceViewSet(viewsets.ModelViewSet):
     def perform_update(self, serializer):
         serializer.save()
 
-
         place = serializer.instance
         project = place.project
-
 
         if not project.places.filter(is_visited=False).exists():
             project.is_completed = True

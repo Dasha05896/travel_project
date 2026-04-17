@@ -20,7 +20,6 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from trips.views import TravelProjectViewSet, PlaceViewSet
 
-
 router = DefaultRouter()
 router.register(r"projects", TravelProjectViewSet)
 router.register(r"places", PlaceViewSet)
